@@ -3,10 +3,8 @@ package com.gmail.xfrednet.worldgentest;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -21,7 +19,7 @@ import mapgenerators.RandomNoiseMapGenerator;
 public class Main {
 	
 	private static int MAP_SIZE = 128;
-	private static int SHOWCASE_SCALE = 4;
+	private static int SHOWCASE_SCALE = 2;
 	private static int GRID_WIDTH = 1;
 	private static int GRID_HEIGHT = 1;
 	
@@ -35,7 +33,7 @@ public class Main {
 		this.guiFrame = new JFrame("xFrednet's 2D world generation test");
 		this.guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.guiFrame.setResizable(false);
-		this.guiFrame.setLocationRelativeTo(null);
+		this.guiFrame.setLocation(100, 100);
 		
 		//TODO add layout
 		this.guiFrame.setLayout(new BorderLayout());
@@ -51,6 +49,8 @@ public class Main {
 		JButton regenButton = new JButton("Regenerate");
 		regenButton.addActionListener(l -> {
 			System.out.println("Button[Regenerate]: pressed");
+			this.guiShowcasePanel.removeAll();
+			new RandomNoiseMapGenerator().generateMap(MAP_SIZE, Main.this);
 		});
 		menuPanel.add(regenButton);
 		
