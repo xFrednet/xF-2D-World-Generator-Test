@@ -14,7 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import mapgenerators.RandomNoiseMapGenerator;
+import com.gmail.xfrednet.worldgentest.biomegen.BiomeNeighborDiff;
+import com.gmail.xfrednet.worldgentest.mapgenerators.RandomNoiseMapGenerator;
 
 public class Main {
 	
@@ -50,7 +51,8 @@ public class Main {
 		regenButton.addActionListener(l -> {
 			System.out.println("Button[Regenerate]: pressed");
 			this.guiShowcasePanel.removeAll();
-			new RandomNoiseMapGenerator().generateMap(MAP_SIZE, Main.this);
+			new BiomeNeighborDiff().generateMap(MAP_SIZE, Main.this);
+			//new RandomNoiseMapGenerator().generateMap(MAP_SIZE, Main.this);
 		});
 		menuPanel.add(regenButton);
 		
@@ -87,6 +89,8 @@ public class Main {
 		titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		conPanel.add(titleLabel);
 		
+		GridLayout layout = (GridLayout)this.guiShowcasePanel.getLayout();
+		
 		this.guiShowcasePanel.add(conPanel);
 		this.guiFrame.pack();
 	}
@@ -94,7 +98,8 @@ public class Main {
 	public static void main(String[] args) {
 		Main me = new Main();
 		
-		new RandomNoiseMapGenerator().generateMap(MAP_SIZE, me);
+		//new RandomNoiseMapGenerator().generateMap(MAP_SIZE, me);
+		new BiomeNeighborDiff().generateMap(MAP_SIZE, me);
 	}
 
 }

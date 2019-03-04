@@ -1,4 +1,4 @@
-package mapgenerators;
+package com.gmail.xfrednet.worldgentest.mapgenerators;
 
 import java.awt.image.BufferedImage;
 import java.util.Random;
