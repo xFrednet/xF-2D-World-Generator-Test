@@ -10,9 +10,9 @@ import com.gmail.xfrednet.worldgentest.math.Vec2;
 
 public class VoronoiDiagramBiomeGenerator extends MapGenerator {
 
-	private static final int NODE_COUNT = 128;
+	private static final int NODE_CHUNK_SIZE = 16;
 	
-	private ArrayList<VoronoiNode> nodes = new ArrayList<>();
+	private VoronoiNode[][] nodes;
 	private int size;
 	
 	
@@ -20,34 +20,43 @@ public class VoronoiDiagramBiomeGenerator extends MapGenerator {
 	public void generateMap(int size, Main main) {
 		this.size = size;
 		
-		createNodes();
-		main.addImage(createBasicNodeImage(), "Node Positions");
+		createNodes(size);
+		main.addImage(createNodes(size), "Node Positions");
 		main.addImage(createNodeImage(), "heyo");
 	}
 	
-	private void createNodes() {
-		nodes.clear();
-		
-		Random r = new Random();
-		for (int nodeNo = 0; nodeNo < NODE_COUNT; nodeNo++) {
-			VoronoiNode node = new VoronoiNode();
-			node.Pos = new Vec2(r.nextInt(size), r.nextInt(size));
-			node.Color = 0xff000000 | r.nextInt(0x00ffffff);
-			
-			this.nodes.add(node);
-		}
-	}
-	
-	private BufferedImage createBasicNodeImage() {
+	private BufferedImage createNodes(int size) {
+		// Create Image for the return
 		BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
-		
-		int[] px = GetPxBuffer(image);
-		for (int index = 0; index < size * size; index++) {
-			px[index] = 0xffffffff;
+		int[] pixel = super.GetPxBuffer(image);
+		for (int y = 0; y < size; y++) {
+			for (int x = 0; x < size; x++) {
+				if (x % NODE_CHUNK_SIZE == 0 || y % NODE_CHUNK_SIZE == 0)
+					pixel[x + y * size] = 0xfffafafa;
+				else 
+					pixel[x + y * size] = 0xffffffff;
+			}
 		}
 		
-		for (VoronoiNode node : this.nodes) {
-			px[node.Pos.X + node.Pos.Y * size] = 0xff000000;
+		// Cleanup
+		this.nodes = new VoronoiNode[size][size];
+		
+		// Create nodes
+		Random r = new Random();
+		int chunkCount = size / NODE_CHUNK_SIZE;
+		int chunkX;
+		for (int chunkY = 0; chunkY < chunkCount; chunkY++) {
+			for (chunkX = 0; chunkX < chunkCount; chunkX++) {
+				int nodeX = chunkX * NODE_CHUNK_SIZE + r.nextInt(NODE_CHUNK_SIZE);
+				int nodeY = chunkY * NODE_CHUNK_SIZE + r.nextInt(NODE_CHUNK_SIZE);
+				
+				VoronoiNode node = new VoronoiNode();
+				node.Pos = new Vec2(nodeX, nodeY);
+				node.Color = 0xff000000 | r.nextInt(0x00ffffff);
+				
+				this.nodes[chunkX][chunkY] = node;
+				pixel[nodeX + nodeY * size] = 0xff000000;
+			}
 		}
 		
 		return image;
@@ -63,24 +72,41 @@ public class VoronoiDiagramBiomeGenerator extends MapGenerator {
 				Vec2 pxPos = new Vec2(x, y);
 				VoronoiNode parent = null;
 				int dst = size * size;
-				for (VoronoiNode node : this.nodes) {
+				for (VoronoiNode node : getRelevantNodes(x, y)) {
 					if (node.Pos.distanceSqr(pxPos) < dst) {
 						parent = node;
 						dst = parent.Pos.distanceSqr(pxPos);
 					}
 				}
 				
-				px[x + y * size] = parent.Color;
+				if (dst == 0)
+					px[x + y * size] = 0xff000000;
+				else
+					px[x + y * size] = parent.Color;
 			}
-		}
-		for (int index = 0; index < size * size; index++) {
-		}
-		
-		for (VoronoiNode node : this.nodes) {
-			px[node.Pos.X + node.Pos.Y * size] = 0xff000000;
 		}
 		
 		return image;
+	}
+
+	private ArrayList<VoronoiNode> getRelevantNodes(int mapX, int mapY) {
+		ArrayList<VoronoiNode> nodes = new ArrayList<VoronoiNode>();
+		int baseChunkX = mapX / NODE_CHUNK_SIZE;
+		int baseChunkY = mapY / NODE_CHUNK_SIZE;
+		for (int yOffset = -1; yOffset <= 1; yOffset++) {
+			int chunkY = baseChunkY + yOffset;
+			if (chunkY < 0 || chunkY >= size / NODE_CHUNK_SIZE)
+				continue;
+			
+			for (int xOffset = -1; xOffset <= 1; xOffset++) {
+				int chunkX = baseChunkX + xOffset;
+				if (chunkX < 0 || chunkX >= size / NODE_CHUNK_SIZE)
+					continue;
+				
+				nodes.add(this.nodes[chunkX][chunkY]);
+			}
+		}
+		return nodes;
 	}
 }
 
