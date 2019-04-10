@@ -64,7 +64,24 @@ public class GridLayout implements LayoutManager2 {
 
 	@Override
 	public Dimension preferredLayoutSize(Container parent) {
-		setCellSize(new Dimension(100, 100)); //TODO
+		// Find the maximum requested cell size
+		int width = 0;
+		int height = 0;
+		for (ComponentPair pair : this.components) {
+			Dimension comSize = pair.component.getPreferredSize();
+			
+			if (comSize.width > width) {
+				width = comSize.width;
+			}
+			
+			if (comSize.height > height) {
+				height = comSize.height;
+			}
+		}
+		
+		suggestCellSize(width, height);
+		
+		// calculate
 		return new Dimension(
 				this.gridWidth * this.cellWidth, 
 				this.gridHeight * this.cellHeight);
@@ -72,7 +89,24 @@ public class GridLayout implements LayoutManager2 {
 
 	@Override
 	public Dimension minimumLayoutSize(Container parent) {
-		setCellSize(new Dimension(100, 100)); //TODO
+		// Find the maximum requested cell size
+		int width = 0;
+		int height = 0;
+		for (ComponentPair pair : this.components) {
+			Dimension comSize = pair.component.getMinimumSize();
+			
+			if (comSize.width > width) {
+				width = comSize.width;
+			}
+			
+			if (comSize.height > height) {
+				height = comSize.height;
+			}
+		}
+		
+		suggestCellSize(width, height);
+		
+		// calculate
 		return new Dimension(
 				this.gridWidth * this.cellWidth, 
 				this.gridHeight * this.cellHeight);
@@ -81,7 +115,7 @@ public class GridLayout implements LayoutManager2 {
 	@Override
 	public void layoutContainer(Container parent) {
 		if (parent != null) {
-			setCellSize(parent.getSize());
+			suggestCellSizeFromParent(parent.getSize());
 		}
 		
 		for (ComponentPair pair : this.components) {
@@ -89,17 +123,22 @@ public class GridLayout implements LayoutManager2 {
 		}
 	}
 
-	private void setCellSize(Dimension parentSize) {
+	private void suggestCellSizeFromParent(Dimension parentSize) {
+		suggestCellSize(
+				parentSize.width / this.gridWidth,
+				parentSize.height / this.gridHeight);
+	}
+	private void suggestCellSize(int width, int height) {
 		if (this.preferredCellWidth != CELL_FLEXIBLE) {
 			this.cellWidth = this.preferredCellWidth;
 		} else {
-			this.cellWidth = parentSize.width / this.gridWidth;
+			this.cellWidth = width;
 		}
 		
 		if (this.preferredCellHeight != CELL_FLEXIBLE) {
 			this.cellHeight = this.preferredCellHeight;
 		} else {
-			this.cellHeight = parentSize.height / this.gridHeight;
+			this.cellHeight = height;
 		}
 	}
 	
