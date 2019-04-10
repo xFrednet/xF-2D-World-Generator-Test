@@ -9,27 +9,33 @@ import java.util.ArrayList;
 
 public class GridLayout implements LayoutManager2 {
 
+	public static final int CELL_FLEXIBLE = 0;
+	
 	int gridWidth;
 	int gridHeight;
-	int cellSize;
+	
+	int preferredCellWidth;
+	int preferredCellHeight;
+	int cellWidth;
+	int cellHeight;
 	
 	ArrayList<ComponentPair> components;
 	boolean gridUsage[][];
 	
-	public GridLayout(int gridWidth, int gridHeight, int cellSize) {
+	public GridLayout(int gridWidth, int gridHeight) {
+		this(gridWidth, gridHeight, CELL_FLEXIBLE, CELL_FLEXIBLE);
+	}
+	public GridLayout(int gridWidth, int gridHeight, int cellWidth, int cellHeight) {
 		this.gridWidth = gridWidth;
 		this.gridHeight = gridHeight;
-		this.cellSize = cellSize;
+		
+		this.preferredCellWidth = cellWidth;
+		this.preferredCellHeight = cellHeight;
+		this.cellWidth = cellWidth;
+		this.cellHeight = cellHeight;
 		
 		this.components = new ArrayList<ComponentPair>();
 		this.gridUsage = new boolean[gridWidth][gridHeight];
-		
-		int x;
-		for (int y = 0; y < this.gridWidth; y++) {
-			for (x = 0; x < this.gridHeight; x++) {
-				this.gridUsage[x][y] = false;
-			}
-		}
 	}
 
 	@Override
@@ -48,29 +54,55 @@ public class GridLayout implements LayoutManager2 {
 			}
 		}
 		
+		unclaimCells(toRemove.constraints);
+
 		if (toRemove != null) {
 			this.components.remove(toRemove);
 		}
+		
 	}
 
 	@Override
 	public Dimension preferredLayoutSize(Container parent) {
+		setCellSize(new Dimension(100, 100)); //TODO
 		return new Dimension(
-				this.gridWidth * this.cellSize, 
-				this.gridHeight * this.cellSize);
+				this.gridWidth * this.cellWidth, 
+				this.gridHeight * this.cellHeight);
 	}
 
 	@Override
 	public Dimension minimumLayoutSize(Container parent) {
-		return preferredLayoutSize(parent);
+		setCellSize(new Dimension(100, 100)); //TODO
+		return new Dimension(
+				this.gridWidth * this.cellWidth, 
+				this.gridHeight * this.cellHeight);
 	}
 
 	@Override
 	public void layoutContainer(Container parent) {
-		// TODO Auto-generated method stub
-		System.out.println("When is this called?");
+		if (parent != null) {
+			setCellSize(parent.getSize());
+		}
+		
+		for (ComponentPair pair : this.components) {
+			applyConstraints(pair);
+		}
 	}
 
+	private void setCellSize(Dimension parentSize) {
+		if (this.preferredCellWidth != CELL_FLEXIBLE) {
+			this.cellWidth = this.preferredCellWidth;
+		} else {
+			this.cellWidth = parentSize.width / this.gridWidth;
+		}
+		
+		if (this.preferredCellHeight != CELL_FLEXIBLE) {
+			this.cellHeight = this.preferredCellHeight;
+		} else {
+			this.cellHeight = parentSize.height / this.gridHeight;
+		}
+	}
+	
 	@Override
 	public void addLayoutComponent(Component comp, Object constraints) {
 		if (!(constraints instanceof GridLayoutConstraints)) {
@@ -88,7 +120,7 @@ public class GridLayout implements LayoutManager2 {
 	private GridLayoutConstraints findFit(GridLayoutConstraints cons) {
 		// x: ! 
 		// y: !
-		if (	cons.prefferedX != GridLayoutConstraints.FIRST_FIT ||
+		if (	cons.prefferedX != GridLayoutConstraints.FIRST_FIT &&
 				cons.prefferedY != GridLayoutConstraints.FIRST_FIT) {
 			cons.gridX = cons.prefferedX;
 			cons.gridY = cons.prefferedY;
@@ -97,7 +129,7 @@ public class GridLayout implements LayoutManager2 {
 		
 		// x: ~
 		// y: !
-		if (	cons.prefferedX == GridLayoutConstraints.FIRST_FIT ||
+		if (	cons.prefferedX == GridLayoutConstraints.FIRST_FIT &&
 				cons.prefferedY != GridLayoutConstraints.FIRST_FIT) {
 			cons.gridX = 0;
 			cons.gridY = cons.prefferedY;
@@ -114,7 +146,7 @@ public class GridLayout implements LayoutManager2 {
 		
 		// x: !
 		// y: ~
-		if (	cons.prefferedX != GridLayoutConstraints.FIRST_FIT ||
+		if (	cons.prefferedX != GridLayoutConstraints.FIRST_FIT &&
 				cons.prefferedY == GridLayoutConstraints.FIRST_FIT) {
 			cons.gridX = cons.prefferedX;
 			cons.gridY = 0;
@@ -131,7 +163,7 @@ public class GridLayout implements LayoutManager2 {
 		
 		// x: ~
 		// y: ~
-		if (	cons.prefferedX == GridLayoutConstraints.FIRST_FIT ||
+		if (	cons.prefferedX == GridLayoutConstraints.FIRST_FIT &&
 				cons.prefferedY == GridLayoutConstraints.FIRST_FIT) {
 			cons.gridX = 0;
 			cons.gridY = 0;
@@ -158,8 +190,8 @@ public class GridLayout implements LayoutManager2 {
 		return cons;
 	}
 	private boolean fits(int x, int y, int width, int height) {
-		if (x < 0 || x + width >= this.gridWidth ||
-				y < 0 || y + height >= this.gridHeight) {
+		if (x < 0 || x + width > this.gridWidth ||
+				y < 0 || y + height > this.gridHeight) {
 			return false;
 		}
 		
@@ -174,9 +206,17 @@ public class GridLayout implements LayoutManager2 {
 	}
 	private void claimCells(GridLayoutConstraints cons) {
 		int x;
-		for (int y = cons.gridY; y < cons.gridY * cons.vertCells; y++) {
-			for (x = cons.gridX; x < cons.gridX * cons.vertCells; x++) {
+		for (int y = cons.gridY; y < cons.gridY + cons.vertCells; y++) {
+			for (x = cons.gridX; x < cons.gridX + cons.horiCells; x++) {
 				this.gridUsage[x][y] = true;
+			}
+		}
+	}
+	private void unclaimCells(GridLayoutConstraints cons) {
+		int x;
+		for (int y = cons.gridY; y < cons.gridY * cons.vertCells; y++) {
+			for (x = cons.gridX; x < cons.gridX * cons.horiCells; x++) {
+				this.gridUsage[x][y] = false;
 			}
 		}
 	}
@@ -185,10 +225,10 @@ public class GridLayout implements LayoutManager2 {
 		GridLayoutConstraints straints = pair.constraints;
 		
 		Rectangle rec = new Rectangle();
-		rec.x = straints.gridX * this.cellSize;
-		rec.y = straints.gridY * this.cellSize;
-		rec.width = straints.horiCells * this.cellSize;
-		rec.height = straints.vertCells * this.cellSize;
+		rec.x = straints.gridX * this.cellWidth;
+		rec.y = straints.gridY * this.cellHeight;
+		rec.width = straints.horiCells * this.cellWidth;
+		rec.height = straints.vertCells * this.cellHeight;
 		
 		com.setBounds(rec);
 	}
@@ -221,8 +261,9 @@ public class GridLayout implements LayoutManager2 {
 			pair.constraints = findFit((GridLayoutConstraints)pair.constraints);
 			
 			claimCells(pair.constraints);
-			applyConstraints(pair);
 		}
+		
+		this.layoutContainer(null);
 	}
 	
 	private class ComponentPair {
