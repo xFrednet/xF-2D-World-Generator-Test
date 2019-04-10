@@ -18,10 +18,12 @@ import javax.swing.JPanel;
 
 import com.gmail.xfrednet.worldgentest.biomegen.BiomeNeighborDiff;
 import com.gmail.xfrednet.worldgentest.biomegen.VoronoiDiagramBiomeGenerator;
+import com.gmail.xfrednet.worldgentest.gui.MainFrame;
 import com.gmail.xfrednet.worldgentest.mapgenerators.RandomNoiseMapGenerator;
 
 public class Main {
 	
+	public static int DEFAULT_IMAGE_SCALE = 2;
 	private static int MAP_SIZE = 128;
 	private static int SHOWCASE_SCALE = 4;
 	private static int GRID_WIDTH = 1;
@@ -98,10 +100,11 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		Main me = new Main();
+		//Main me = new Main();
 		//me.testNoiseFactory();
 		//new RandomNoiseMapGenerator().generateMap(MAP_SIZE, me);
 		//new BiomeNeighborDiff().generateMap(MAP_SIZE, me);
+		new MainFrame(4, 4, 128);
 	}
 	
 	private void testNoiseFactory() {
