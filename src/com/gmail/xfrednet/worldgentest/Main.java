@@ -3,11 +3,8 @@ package com.gmail.xfrednet.worldgentest;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -16,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import com.gmail.xfrednet.worldgentest.biomegen.BiomeNeighborDiff;
+import com.gmail.xfrednet.worldgentest.mapgenerators.RandomNoiseMapGenerator;
 
 public class Main {
 	
@@ -34,7 +34,7 @@ public class Main {
 		this.guiFrame = new JFrame("xFrednet's 2D world generation test");
 		this.guiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.guiFrame.setResizable(false);
-		this.guiFrame.setLocationRelativeTo(null);
+		this.guiFrame.setLocation(100, 100);
 		
 		//TODO add layout
 		this.guiFrame.setLayout(new BorderLayout());
@@ -50,6 +50,9 @@ public class Main {
 		JButton regenButton = new JButton("Regenerate");
 		regenButton.addActionListener(l -> {
 			System.out.println("Button[Regenerate]: pressed");
+			this.guiShowcasePanel.removeAll();
+			new BiomeNeighborDiff().generateMap(MAP_SIZE, Main.this);
+			//new RandomNoiseMapGenerator().generateMap(MAP_SIZE, Main.this);
 		});
 		menuPanel.add(regenButton);
 		
@@ -68,7 +71,7 @@ public class Main {
 		return this.guiShowcasePanel;
 	}
 	
-	private void addImage(Image img, String title) {
+	public void addImage(Image img, String title) {
 		JPanel conPanel = new JPanel();
 		conPanel.setLayout(new BoxLayout(conPanel, BoxLayout.Y_AXIS));
 		conPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -86,6 +89,8 @@ public class Main {
 		titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		conPanel.add(titleLabel);
 		
+		GridLayout layout = (GridLayout)this.guiShowcasePanel.getLayout();
+		
 		this.guiShowcasePanel.add(conPanel);
 		this.guiFrame.pack();
 	}
@@ -93,21 +98,8 @@ public class Main {
 	public static void main(String[] args) {
 		Main me = new Main();
 		
-		BufferedImage image = new BufferedImage(MAP_SIZE, MAP_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
-		Graphics2D g = (Graphics2D) image.getGraphics();
-		g.setColor(new Color(0xff00ff));
-		g.fillRect(0, 0, MAP_SIZE, MAP_SIZE);
-		g.dispose();
-		me.addImage(image, "Hello  World");
-		
-		BufferedImage image2 = new BufferedImage(MAP_SIZE, MAP_SIZE, BufferedImage.TYPE_4BYTE_ABGR);
-		g = (Graphics2D) image2.getGraphics();
-		g.setColor(new Color(0x00ff00));
-		g.fillRect(0,  0, MAP_SIZE, MAP_SIZE);
-		g.setColor(new Color(0xffffff));
-		g.drawChars("Hello".toCharArray(), 0, 5, 10, 10);
-		g.dispose();
-		me.addImage(image2, "Hello from the other side");
+		//new RandomNoiseMapGenerator().generateMap(MAP_SIZE, me);
+		new BiomeNeighborDiff().generateMap(MAP_SIZE, me);
 	}
 
 }
