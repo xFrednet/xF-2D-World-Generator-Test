@@ -11,9 +11,9 @@ public class MainFrame {
 	JFrame frame;
 	ShowcasePanel showPanel;
 	
-	public MainFrame(int gridWidth, int gridHeight, int cellSize) {
+	public MainFrame(int gridWidth, int gridHeight, int imageSize) {
 		initFrame();
-		initShowPanel(gridWidth, gridHeight, cellSize);
+		initShowPanel(gridWidth, gridHeight, imageSize);
 		initMenuPanel();
 		
 		// finish init

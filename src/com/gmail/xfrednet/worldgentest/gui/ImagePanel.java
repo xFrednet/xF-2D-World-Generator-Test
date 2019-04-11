@@ -2,8 +2,11 @@ package com.gmail.xfrednet.worldgentest.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.Image;
+import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -12,10 +15,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.gmail.xfrednet.worldgentest.Main;
+import com.gmail.xfrednet.worldgentest.gui.Layout.GridLayoutConstraints;
 
 public class ImagePanel {
 	
 	public static final int POSITION_FIRST_FIT = -1;
+	public static final int DEFAULT_PADDING = 5;
 	
 	int imageScale;
 	int gridX;
@@ -44,7 +49,7 @@ public class ImagePanel {
 		this.contentPanel.setLayout(new BoxLayout(this.contentPanel, BoxLayout.Y_AXIS));
 		this.contentPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(new Color(0xacacac)), 
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+				BorderFactory.createEmptyBorder(DEFAULT_PADDING - 1, DEFAULT_PADDING - 1, DEFAULT_PADDING - 1, DEFAULT_PADDING - 1)));
 		
 		// Add Image
 		this.imageLabel = new JLabel(new ImageIcon(image.getScaledInstance(
@@ -60,18 +65,12 @@ public class ImagePanel {
 		this.contentPanel.add(this.titleLabel);
 	}
 	
-	JPanel getContentPanel() {
+	public JPanel getContentPanel() {
 		return this.contentPanel;
 	}
 	
-	GridBagConstraints getConstrains() {
-		GridBagConstraints cons = new GridBagConstraints ();
-		cons.gridwidth = this.imageScale;
-		cons.gridheight = this.imageScale;
-		cons.gridx = (this.gridX != POSITION_FIRST_FIT) ? this.gridX : GridBagConstraints.RELATIVE;
-		cons.gridy = (this.gridY != POSITION_FIRST_FIT) ? this.gridY : GridBagConstraints.RELATIVE;
-		
-		return cons;
+	GridLayoutConstraints getConstrains() {
+		return new GridLayoutConstraints(this.gridX, this.gridY, this.imageScale, this.imageScale);
 	}
 	
 	public void updateImage(Image image) {
@@ -83,5 +82,19 @@ public class ImagePanel {
 	
 	public void updateTitle(String text) {
 		this.titleLabel.setText(text);
+	}
+	
+	public static Dimension GetPreferredSize(int imageSize) {
+		Dimension size = new Dimension();
+		
+		// width
+		size.width = DEFAULT_PADDING * 2 + imageSize;
+		
+		// height
+		size.height = DEFAULT_PADDING * 2 + imageSize;
+		// TODO xFrednet 10.04.2019: change this to use a FontMatrix 
+		size.height += new JLabel("ABCDEFGHIJKLMNOPQRSTUVWXYZ").getPreferredSize().height;
+		
+		return size;
 	}
 }

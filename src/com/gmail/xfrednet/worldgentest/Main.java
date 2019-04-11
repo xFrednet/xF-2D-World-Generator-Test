@@ -18,12 +18,13 @@ import javax.swing.JPanel;
 
 import com.gmail.xfrednet.worldgentest.biomegen.BiomeNeighborDiff;
 import com.gmail.xfrednet.worldgentest.biomegen.VoronoiDiagramBiomeGenerator;
+import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
 import com.gmail.xfrednet.worldgentest.gui.MainFrame;
 import com.gmail.xfrednet.worldgentest.mapgenerators.RandomNoiseMapGenerator;
 
 public class Main {
 	
-	public static int DEFAULT_IMAGE_SCALE = 2;
+	public static int DEFAULT_IMAGE_SCALE = 1;
 	private static int MAP_SIZE = 128;
 	private static int SHOWCASE_SCALE = 4;
 	private static int GRID_WIDTH = 1;
@@ -104,10 +105,28 @@ public class Main {
 		//me.testNoiseFactory();
 		//new RandomNoiseMapGenerator().generateMap(MAP_SIZE, me);
 		//new BiomeNeighborDiff().generateMap(MAP_SIZE, me);
-		new MainFrame(4, 4, 128);
+		ImagePanel panel = new ImagePanel(testNoiseFactory(null), "Hello");
+		//me.guiFrame.add(panel.getContentPanel());
+		//me.guiFrame.pack();
+		MainFrame frame = new MainFrame(4, 4, 128);
+		frame.getShowcasePanel().add(panel);
+		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[1 0]"));
+		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[0 1]"));
+		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[1 1]"));
+		
+		try {
+			for (int loop = 0; loop < 10; loop++) {
+				Thread.sleep(1000);
+				panel.updateImage(testNoiseFactory(null));
+				frame.getShowcasePanel().getContentPanel().repaint();
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private void testNoiseFactory() {
+	private static Image testNoiseFactory(Main m) {
 		int count = 0;
 		do {
 			float[] f1 = ImageNoiseFactory.Perlin.GenerateNoise(
@@ -142,8 +161,10 @@ public class Main {
 			
 			BufferedImage img = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 			img.setRGB(0, 0, 128, 128, c, 0, 128);
-			addImage(img, "Nice to see you");
+			//m.addImage(img, "Nice to see you");
+			return img;
 		} while (count++ < 4);
+		
 	}
 	
 }

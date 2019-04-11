@@ -270,6 +270,8 @@ public class GridLayout implements LayoutManager2 {
 		rec.height = straints.vertCells * this.cellHeight;
 		
 		com.setBounds(rec);
+		com.doLayout();
+		com.repaint();
 	}
 	
 	@Override
