@@ -16,18 +16,18 @@ public class RandomNoiseMapGenerator extends MapGenerator {
 	
 	public void generateMap(int size, Main main) {
 		BufferedImage randMap1 = createRandMap(size);
-		main.addImage(randMap1, "Random Map 1");
+		//main.addImage(randMap1, "Random Map 1");
 		BufferedImage randMap2 = createRandMap(size);
-		main.addImage(randMap2, "Random Map 2");
+		//main.addImage(randMap2, "Random Map 2");
 		BufferedImage randMapCom = CombineImages(randMap1, 0.5f, randMap2, 0.5f, BufferedImage.TYPE_INT_ARGB);
-		main.addImage(randMapCom, "Random combined map");
-		main.addImage(smoothScaleMap(randMapCom, size), "combined & scaled");
+		//main.addImage(randMapCom, "Random combined map");
+		//main.addImage(smoothScaleMap(randMapCom, size), "combined & scaled");
 		
 		BufferedImage scaledMap1 = smoothScaleMap(randMap1, size);
-		main.addImage(scaledMap1, "Scaled Random Map 1");
+		//main.addImage(scaledMap1, "Scaled Random Map 1");
 		BufferedImage scaledMap2 = smoothScaleMap(randMap2, size);
-		main.addImage(scaledMap2, "Scaled Random Map 2");
-		main.addImage(CombineImages(scaledMap1, 0.5f, scaledMap2, 0.5f, BufferedImage.TYPE_INT_ARGB), "Scaled combined");
+		//main.addImage(scaledMap2, "Scaled Random Map 2");
+		//main.addImage(CombineImages(scaledMap1, 0.5f, scaledMap2, 0.5f, BufferedImage.TYPE_INT_ARGB), "Scaled combined");
 	}
 	
 	private BufferedImage createRandMap(int size) {

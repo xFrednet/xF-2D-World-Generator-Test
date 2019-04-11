@@ -1,13 +1,10 @@
 package com.gmail.xfrednet.worldgentest.gui;
 
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.gmail.xfrednet.worldgentest.gui.Layout.GridLayout;
-import com.gmail.xfrednet.worldgentest.gui.Layout.GridLayoutConstraints;
 
 public class ShowcasePanel {
 

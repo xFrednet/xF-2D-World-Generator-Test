@@ -21,8 +21,8 @@ public class VoronoiDiagramBiomeGenerator extends MapGenerator {
 		this.size = size;
 		
 		createNodes(size);
-		main.addImage(createNodes(size), "Node Positions");
-		main.addImage(createNodeImage(), "heyo");
+		//TODO main.addImage(createNodes(size), "Node Positions");
+		//TODO main.addImage(createNodeImage(), "heyo");
 	}
 	
 	private BufferedImage createNodes(int size) {
