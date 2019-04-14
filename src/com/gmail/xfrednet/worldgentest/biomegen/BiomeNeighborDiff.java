@@ -1,7 +1,6 @@
 package com.gmail.xfrednet.worldgentest.biomegen;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -22,7 +21,7 @@ public class BiomeNeighborDiff extends MapGenerator {
 	@Override
 	public void generateMap(int size, Main main) {
 		BufferedImage img = seedOnce(new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB), size);
-		main.addImage(img, "Hello from the other side!");
+		//TODO main.addImage(img, "Hello from the other side!");
 		
 	}
 	
