@@ -2,8 +2,11 @@ package com.gmail.xfrednet.worldgentest;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
+import com.gmail.xfrednet.worldgentest.biomegen.VoronoiDiagramBiomeGenerator;
+import com.gmail.xfrednet.worldgentest.gui.IPresenter;
 import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
 import com.gmail.xfrednet.worldgentest.gui.MainFrame;
 
@@ -14,7 +17,9 @@ public class Main {
 	
 	public static void main(String[] args) {
 		ImagePanel panel = new ImagePanel(testNoiseFactory(null), "Hello");
-		MainFrame frame = new MainFrame(4, 4, 128);
+		ArrayList<IPresenter> list = new ArrayList<IPresenter>();
+		list.add(new VoronoiDiagramBiomeGenerator());
+		MainFrame frame = new MainFrame(list);
 		
 		frame.getShowcasePanel().add(panel);
 		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[1 0]"));
