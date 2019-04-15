@@ -27,24 +27,21 @@ public class MainFrame {
 			"I <3 %s"
 	};
 	
-	JFrame frame;
-	ShowcasePanel showPanel;
-	JComboBox presenterSelector;
+	private JFrame frame = null;
+	private ShowcasePanel showPanel = null;
+	private JComboBox presenterSelector = null;
 	
-	private ArrayList<IPresenter> presenters = new ArrayList<IPresenter>();
+	private ArrayList<IPresenter> presenters = null;
 	private IPresenter selectedPresenter = null;
 	
 	public MainFrame(ArrayList<IPresenter> presenters) {
+		// Save Presenters
+		this.presenters = ((presenters != null) ? presenters : new ArrayList<IPresenter>());
+
 		// init the components
 		initFrame();
 		initMenuPanel();
-		
-		// Save Presenters
-		if (presenters == null) {
-			presenters = new ArrayList<IPresenter>();
-		}
-		
-		this.presenters = presenters;
+
 		if (this.presenters.size() != 0) {
 			selectPresenter(this.presenters.get(0));
 		}
@@ -57,23 +54,26 @@ public class MainFrame {
 	private void initMenuPanel() {
 		JPanel menuPanel = new JPanel();
 		menuPanel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(new Color(0xffff00ff)/*new Color(0xacacac)*/), 
+				BorderFactory.createLineBorder(new Color(0xacacac)),
 				BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 		
 		// Regenerate Button
-		JButton regenButten = new JButton("Regenerate");
-		//TODO action Listener
-		menuPanel.add(regenButten);
+		JButton regenButton = new JButton("Regenerate");
+		regenButton.addActionListener(l -> {
+			if (selectedPresenter != null) {
+				showPanel.getContentPanel().removeAll();
+				selectedPresenter.present(showPanel);
+			}
+		});
+		menuPanel.add(regenButton);
 		
 		// Presenter selector
 		String[] presentorNames = new String[this.presenters.size()];
 		for (int index = 0; index < presentorNames.length; index++) {
 			presentorNames[index] = this.presenters.get(index).getName();
 		}
-		this.presenterSelector = new JComboBox<String>(presentorNames);
+		this.presenterSelector = new JComboBox<>(presentorNames);
 		menuPanel.add(this.presenterSelector);
-		
-		//TODO Combobox
 		
 		//TODO Add to mainframe^
 		this.frame.add(menuPanel, BorderLayout.PAGE_START);

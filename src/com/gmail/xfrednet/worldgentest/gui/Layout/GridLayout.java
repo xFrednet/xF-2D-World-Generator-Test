@@ -253,8 +253,8 @@ public class GridLayout implements LayoutManager2 {
 	}
 	private void unclaimCells(GridLayoutConstraints cons) {
 		int x;
-		for (int y = cons.gridY; y < cons.gridY * cons.vertCells; y++) {
-			for (x = cons.gridX; x < cons.gridX * cons.horiCells; x++) {
+		for (int y = cons.gridY; y < cons.gridY + cons.vertCells; y++) {
+			for (x = cons.gridX; x < cons.gridX + cons.horiCells; x++) {
 				this.gridUsage[x][y] = false;
 			}
 		}
