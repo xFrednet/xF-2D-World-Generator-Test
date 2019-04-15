@@ -16,11 +16,11 @@ public class Main {
 	private static int DEFAULT_MAP_SIZE = 128;
 	
 	public static void main(String[] args) {
-		ImagePanel panel = new ImagePanel(testNoiseFactory(null), "Hello");
 		ArrayList<IPresenter> list = new ArrayList<IPresenter>();
 		list.add(new VoronoiDiagramBiomeGenerator());
 		MainFrame frame = new MainFrame(list);
 		
+		ImagePanel panel = new ImagePanel(testNoiseFactory(null), "Hello");
 		frame.getShowcasePanel().add(panel);
 		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[1 0]"));
 		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[0 1]"));

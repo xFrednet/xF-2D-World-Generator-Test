@@ -292,8 +292,8 @@ public class GridLayout implements LayoutManager2 {
 	@Override
 	public void invalidateLayout(Container target) {
 		int x;
-		for (int y = 0; y < this.gridWidth; y++) {
-			for (x = 0; x < this.gridHeight; x++) {
+		for (int y = 0; y < this.gridHeight; y++) {
+			for (x = 0; x < this.gridWidth; x++) {
 				this.gridUsage[x][y] = false;
 			}
 		}

@@ -1,11 +1,16 @@
 package com.gmail.xfrednet.worldgentest.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class MainFrame {
 
@@ -24,6 +29,7 @@ public class MainFrame {
 	
 	JFrame frame;
 	ShowcasePanel showPanel;
+	JComboBox presenterSelector;
 	
 	private ArrayList<IPresenter> presenters = new ArrayList<IPresenter>();
 	private IPresenter selectedPresenter = null;
@@ -43,15 +49,34 @@ public class MainFrame {
 			selectPresenter(this.presenters.get(0));
 		}
 		
-		
 		// finish init
 		this.frame.pack();
 		this.frame.setVisible(true);
 	}
 
 	private void initMenuPanel() {
-		// TODO Auto-generated method stub
+		JPanel menuPanel = new JPanel();
+		menuPanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(new Color(0xffff00ff)/*new Color(0xacacac)*/), 
+				BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 		
+		// Regenerate Button
+		JButton regenButten = new JButton("Regenerate");
+		//TODO action Listener
+		menuPanel.add(regenButten);
+		
+		// Presenter selector
+		String[] presentorNames = new String[this.presenters.size()];
+		for (int index = 0; index < presentorNames.length; index++) {
+			presentorNames[index] = this.presenters.get(index).getName();
+		}
+		this.presenterSelector = new JComboBox<String>(presentorNames);
+		menuPanel.add(this.presenterSelector);
+		
+		//TODO Combobox
+		
+		//TODO Add to mainframe^
+		this.frame.add(menuPanel, BorderLayout.PAGE_START);
 	}
 
 	private void setupShowcasePanel() {
