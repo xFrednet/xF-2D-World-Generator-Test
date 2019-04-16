@@ -138,7 +138,7 @@ public class VoronoiDiagramBiomeGenerator extends MapGenerator implements IPrese
 	}
 
 	@Override
-	public JPanel getPresentationSettingsPanel() {
+	public JPanel getPresentationsPanel() {
 		return null;
 	}
 }

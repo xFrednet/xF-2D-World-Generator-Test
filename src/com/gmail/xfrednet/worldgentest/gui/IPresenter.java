@@ -17,5 +17,5 @@ public interface IPresenter {
 	public void present(ShowcasePanel panel);
 	
 	// Other GUI
-	public JPanel getPresentationSettingsPanel();
+	public JPanel getPresentationsPanel();
 }
