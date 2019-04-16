@@ -3,6 +3,7 @@ package com.gmail.xfrednet.worldgentest.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.Random;
@@ -53,7 +54,7 @@ public class MainFrame {
 	}
 
 	private void initMenuPanel() {
-		JPanel menuPanel = new JPanel();
+		JPanel menuPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		menuPanel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(new Color(0xacacac)),
 				BorderFactory.createEmptyBorder(4, 4, 4, 4)));
@@ -83,7 +84,6 @@ public class MainFrame {
 		
 		this.frame.add(menuPanel, BorderLayout.PAGE_START);
 	}
-
 
 	private void initFrame() {
 		this.frame = new JFrame("No show today, sorry!");
