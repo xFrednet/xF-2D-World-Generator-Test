@@ -1,11 +1,19 @@
 package com.gmail.xfrednet.worldgentest;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import com.gmail.xfrednet.worldgentest.biomegen.VoronoiDiagramBiomeGenerator;
+import com.gmail.xfrednet.worldgentest.gui.IPresenter;
 import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
 import com.gmail.xfrednet.worldgentest.gui.MainFrame;
+import com.gmail.xfrednet.worldgentest.gui.ShowcasePanel;
 
 public class Main {
 	
@@ -13,24 +21,10 @@ public class Main {
 	private static int DEFAULT_MAP_SIZE = 128;
 	
 	public static void main(String[] args) {
-		ImagePanel panel = new ImagePanel(testNoiseFactory(null), "Hello");
-		MainFrame frame = new MainFrame(4, 4, 128);
-		
-		frame.getShowcasePanel().add(panel);
-		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[1 0]"));
-		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[0 1]"));
-		frame.getShowcasePanel().add(new ImagePanel(testNoiseFactory(null), "[1 1]"));
-		
-		try {
-			for (int loop = 0; loop < 10; loop++) {
-				Thread.sleep(1000);
-				panel.updateImage(testNoiseFactory(null));
-				frame.getShowcasePanel().getContentPanel().repaint();
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ArrayList<IPresenter> list = new ArrayList<>();
+		list.add(new VoronoiDiagramBiomeGenerator());
+		list.add(new TrashPresenter());
+		MainFrame frame = new MainFrame(list);
 	}
 	
 	private static Image testNoiseFactory(Main m) {
@@ -52,7 +46,6 @@ public class Main {
 			byte[] m1 = ImageNoiseFactory.FToB(
 					f1);
 			
-			
 			long sum = 0;
 			int[] c = new int[128 * 128];
 			for (int index = 0; index < 128 * 128; index++) {
@@ -70,8 +63,38 @@ public class Main {
 			img.setRGB(0, 0, 128, 128, c, 0, 128);
 			//m.addImage(img, "Nice to see you");
 			return img;
-		} while (count++ < 4);
+		} while (count++ < 4);		
+	}
+	
+}
+
+class TrashPresenter implements IPresenter {
+
+	@Override
+	public String getName() {
+		return "Trashpanda";
+	}
+
+	@Override
+	public Dimension getPresentationGridSize() {
+		return null;
+	}
+
+	@Override
+	public int getPresentationDefaultImageSize() {
+		return 0;
+	}
+
+	@Override
+	public void present(ShowcasePanel panel) {
+	}
+
+	@Override
+	public JPanel getPresentationsPanel() {
+		JPanel panel = new JPanel();
+		panel.add(new JLabel("I'm a piece of trash"));
 		
+		return panel;
 	}
 	
 }

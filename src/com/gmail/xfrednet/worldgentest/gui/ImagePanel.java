@@ -30,7 +30,7 @@ public class ImagePanel {
 		this(img, title, Main.DEFAULT_IMAGE_SCALE);
 	}
 	public ImagePanel(Image img, String title, int imageScale) {
-		this(img, title, Main.DEFAULT_IMAGE_SCALE, POSITION_FIRST_FIT, POSITION_FIRST_FIT);
+		this(img, title, imageScale, POSITION_FIRST_FIT, POSITION_FIRST_FIT);
 	}
 	public ImagePanel(Image img, String title, int imageScale, int gridX, int gridY) {
 		this.imageScale = imageScale;

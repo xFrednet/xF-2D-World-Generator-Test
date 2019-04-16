@@ -12,7 +12,7 @@ public class ShowcasePanel {
 	int gridHeight;
 	
 	JPanel contentPanel;
-	GridLayout contentlayout;
+	GridLayout contentLayout;
 	
 	public ShowcasePanel(int gridWidth, int gridHeight, int imageSize) {
 		this.gridWidth = gridWidth;
@@ -25,8 +25,8 @@ public class ShowcasePanel {
 		this.contentPanel = new JPanel();
 		
 		Dimension cellSize = ImagePanel.GetPreferredSize(imageSize);
-		this.contentlayout = new GridLayout(this.gridWidth, this.gridHeight, cellSize.width, cellSize.height);
-		this.contentPanel.setLayout(this.contentlayout);
+		this.contentLayout = new GridLayout(this.gridWidth, this.gridHeight, cellSize.width, cellSize.height);
+		this.contentPanel.setLayout(this.contentLayout);
 	}
 	
 	public void add(ImagePanel image) {

@@ -1,21 +1,26 @@
 package com.gmail.xfrednet.worldgentest.biomegen;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JPanel;
+
 import com.gmail.xfrednet.worldgentest.Main;
 import com.gmail.xfrednet.worldgentest.MapGenerator;
+import com.gmail.xfrednet.worldgentest.gui.IPresenter;
+import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
+import com.gmail.xfrednet.worldgentest.gui.ShowcasePanel;
 import com.gmail.xfrednet.worldgentest.math.Vec2;
 
-public class VoronoiDiagramBiomeGenerator extends MapGenerator {
+public class VoronoiDiagramBiomeGenerator extends MapGenerator implements IPresenter {
 
 	private static final int NODE_CHUNK_SIZE = 16;
 	
 	private VoronoiNode[][] nodes;
 	private int size;
-	
-	
+
 	@Override
 	public void generateMap(int size, Main main) {
 		this.size = size;
@@ -107,6 +112,34 @@ public class VoronoiDiagramBiomeGenerator extends MapGenerator {
 			}
 		}
 		return nodes;
+	}
+
+	@Override
+	public String getName() {
+		return "Vorono Diagram";
+	}
+
+	@Override
+	public Dimension getPresentationGridSize() {
+		return new Dimension(4, 2);
+	}
+
+	@Override
+	public int getPresentationDefaultImageSize() {
+		return 128;
+	}
+
+	@Override
+	public void present(ShowcasePanel panel) {
+		this.size = getPresentationDefaultImageSize();
+
+		panel.add(new ImagePanel(createNodes(size), "Node Placement", 2));
+		panel.add(new ImagePanel(createNodeImage(), "Node Image", 2));
+	}
+
+	@Override
+	public JPanel getPresentationsPanel() {
+		return null;
 	}
 }
 

@@ -253,8 +253,8 @@ public class GridLayout implements LayoutManager2 {
 	}
 	private void unclaimCells(GridLayoutConstraints cons) {
 		int x;
-		for (int y = cons.gridY; y < cons.gridY * cons.vertCells; y++) {
-			for (x = cons.gridX; x < cons.gridX * cons.horiCells; x++) {
+		for (int y = cons.gridY; y < cons.gridY + cons.vertCells; y++) {
+			for (x = cons.gridX; x < cons.gridX + cons.horiCells; x++) {
 				this.gridUsage[x][y] = false;
 			}
 		}
@@ -292,8 +292,8 @@ public class GridLayout implements LayoutManager2 {
 	@Override
 	public void invalidateLayout(Container target) {
 		int x;
-		for (int y = 0; y < this.gridWidth; y++) {
-			for (x = 0; x < this.gridHeight; x++) {
+		for (int y = 0; y < this.gridHeight; y++) {
+			for (x = 0; x < this.gridWidth; x++) {
 				this.gridUsage[x][y] = false;
 			}
 		}
