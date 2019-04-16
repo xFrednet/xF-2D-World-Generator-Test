@@ -14,6 +14,7 @@ import com.gmail.xfrednet.worldgentest.gui.IPresenter;
 import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
 import com.gmail.xfrednet.worldgentest.gui.MainFrame;
 import com.gmail.xfrednet.worldgentest.gui.ShowcasePanel;
+import com.gmail.xfrednet.worldgentest.mapgenerators.RandomNoiseMapGenerator;
 
 public class Main {
 	
@@ -23,6 +24,7 @@ public class Main {
 	public static void main(String[] args) {
 		ArrayList<IPresenter> list = new ArrayList<>();
 		list.add(new VoronoiDiagramBiomeGenerator());
+		list.add(new RandomNoiseMapGenerator());
 		list.add(new TrashPresenter());
 		MainFrame frame = new MainFrame(list);
 	}

@@ -1,17 +1,62 @@
 package com.gmail.xfrednet.worldgentest.mapgenerators;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import javax.swing.JPanel;
+
 import com.gmail.xfrednet.worldgentest.Main;
 import com.gmail.xfrednet.worldgentest.MapGenerator;
+import com.gmail.xfrednet.worldgentest.gui.IPresenter;
+import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
+import com.gmail.xfrednet.worldgentest.gui.ShowcasePanel;
 
-public class RandomNoiseMapGenerator extends MapGenerator {
+public class RandomNoiseMapGenerator extends MapGenerator implements IPresenter {
 
 	private static int RAND_MAP_SCALE = 8;
 	
 	public RandomNoiseMapGenerator() {
 		
+	}
+
+	@Override
+	public String getName() {
+		return "Random Noise Generator";
+	}
+
+	@Override
+	public Dimension getPresentationGridSize() {
+		return new Dimension(6, 4);
+	}
+
+	@Override
+	public int getPresentationDefaultImageSize() {
+		return 128;
+	}
+
+	@Override
+	public void present(ShowcasePanel panel) {
+		int size = getPresentationDefaultImageSize();
+		
+		BufferedImage randMap1 = createRandMap(size);
+		panel.add(new ImagePanel(randMap1, "Map 1", 2));
+		BufferedImage randMap2 = createRandMap(size);
+		panel.add(new ImagePanel(randMap2, "Map 2", 2));
+		BufferedImage randMapCom = CombineImages(randMap1, 0.5f, randMap2, 0.5f, BufferedImage.TYPE_INT_ARGB);
+		panel.add(new ImagePanel(randMapCom, "Map 1 + Map 2", 2));
+		
+		BufferedImage scaledMap1 = smoothScaleMap(randMap1, size);
+		panel.add(new ImagePanel(scaledMap1, "scaled Map 1", 2));
+		BufferedImage scaledMap2 = smoothScaleMap(randMap2, size);
+		panel.add(new ImagePanel(scaledMap2, "scaled Map 2", 2));
+		BufferedImage scaledMapCom = CombineImages(scaledMap1, 0.5f, scaledMap2, 0.5f, BufferedImage.TYPE_INT_ARGB);
+		panel.add(new ImagePanel(scaledMapCom, "scaled Map 1 + scaled Map 2", 2));
+	}
+
+	@Override
+	public JPanel getPresentationsPanel() {
+		return null;
 	}
 	
 	public void generateMap(int size, Main main) {

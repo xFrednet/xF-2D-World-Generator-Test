@@ -88,7 +88,7 @@ public class MainFrame {
 	private void initFrame() {
 		this.frame = new JFrame("No show today, sorry!");
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.frame.setResizable(false);
+		//this.frame.setResizable(false);
 		this.frame.setLocation(100, 100);
 		this.frame.setLayout(new BorderLayout());
 	}
