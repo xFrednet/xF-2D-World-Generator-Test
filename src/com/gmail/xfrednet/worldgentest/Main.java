@@ -11,8 +11,8 @@ import javax.swing.JPanel;
 
 import com.gmail.xfrednet.worldgentest.biomegen.NeighborSpreadBiomeGenerator;
 import com.gmail.xfrednet.worldgentest.biomegen.VoronoiDiagramBiomeGenerator;
+import com.gmail.xfrednet.worldgentest.factory.ImageNoiseFactory;
 import com.gmail.xfrednet.worldgentest.gui.IPresenter;
-import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
 import com.gmail.xfrednet.worldgentest.gui.MainFrame;
 import com.gmail.xfrednet.worldgentest.gui.ShowcasePanel;
 import com.gmail.xfrednet.worldgentest.mapgenerators.RandomNoiseMapGenerator;
@@ -20,14 +20,14 @@ import com.gmail.xfrednet.worldgentest.mapgenerators.RandomNoiseMapGenerator;
 public class Main {
 	
 	public static int DEFAULT_IMAGE_SCALE = 1;
-	private static int DEFAULT_MAP_SIZE = 128;
 	
 	public static void main(String[] args) {
 		ArrayList<IPresenter> list = new ArrayList<>();
-		list.add(new VoronoiDiagramBiomeGenerator());
-		list.add(new RandomNoiseMapGenerator());
-		list.add(new TrashPresenter());
 		list.add(new NeighborSpreadBiomeGenerator());
+		list.add(new RandomNoiseMapGenerator());
+		list.add(new VoronoiDiagramBiomeGenerator());
+		list.add(new TrashPresenter());
+		
 		MainFrame frame = new MainFrame(list);
 	}
 	
@@ -65,7 +65,6 @@ public class Main {
 			
 			BufferedImage img = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
 			img.setRGB(0, 0, 128, 128, c, 0, 128);
-			//m.addImage(img, "Nice to see you");
 			return img;
 		} while (count++ < 4);		
 	}
