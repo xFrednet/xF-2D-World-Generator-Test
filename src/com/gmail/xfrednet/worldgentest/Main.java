@@ -9,11 +9,13 @@ import java.util.Random;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.gmail.xfrednet.worldgentest.biomegen.NeighborSpreadBiomeGenerator;
 import com.gmail.xfrednet.worldgentest.biomegen.VoronoiDiagramBiomeGenerator;
 import com.gmail.xfrednet.worldgentest.gui.IPresenter;
 import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
 import com.gmail.xfrednet.worldgentest.gui.MainFrame;
 import com.gmail.xfrednet.worldgentest.gui.ShowcasePanel;
+import com.gmail.xfrednet.worldgentest.mapgenerators.RandomNoiseMapGenerator;
 
 public class Main {
 	
@@ -23,7 +25,9 @@ public class Main {
 	public static void main(String[] args) {
 		ArrayList<IPresenter> list = new ArrayList<>();
 		list.add(new VoronoiDiagramBiomeGenerator());
+		list.add(new RandomNoiseMapGenerator());
 		list.add(new TrashPresenter());
+		list.add(new NeighborSpreadBiomeGenerator());
 		MainFrame frame = new MainFrame(list);
 	}
 	

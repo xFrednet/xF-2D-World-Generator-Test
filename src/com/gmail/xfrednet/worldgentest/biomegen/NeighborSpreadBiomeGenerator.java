@@ -1,27 +1,57 @@
 package com.gmail.xfrednet.worldgentest.biomegen;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.JPanel;
+
 import com.gmail.xfrednet.worldgentest.Main;
 import com.gmail.xfrednet.worldgentest.MapGenerator;
+import com.gmail.xfrednet.worldgentest.gui.IPresenter;
+import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
+import com.gmail.xfrednet.worldgentest.gui.ShowcasePanel;
 
-public class BiomeNeighborDiff extends MapGenerator {
+public class NeighborSpreadBiomeGenerator extends MapGenerator implements IPresenter {
 
 	private static final float SEED_START = 1.0f;
 	private static final float SEED_RANGE = 0.5f;
 	private static final float SEED_CHANGE = 0.2f;
-	
-	
-	public BiomeNeighborDiff() {
-		// TODO Auto-generated constructor stub
+		
+	public NeighborSpreadBiomeGenerator() {}
+
+	@Override
+	public String getName() {
+		return "Neightbor Spread";
 	}
 
 	@Override
-	public void generateMap(int size, Main main) {
+	public Dimension getPresentationGridSize() {
+		return new Dimension(4, 4);
+	}
+
+	@Override
+	public int getPresentationDefaultImageSize() {
+		return 128;
+	}
+
+	@Override
+	public void present(ShowcasePanel panel) {
+		int size = getPresentationDefaultImageSize();
+		
 		BufferedImage img = seedOnce(new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB), size);
-		//TODO main.addImage(img, "Hello from the other side!");
+		panel.add(new ImagePanel(img, "One Seed placed", 4));
+	}
+
+	@Override
+	public JPanel getPresentationsPanel() {
+		return null;
+	}
+	
+	@Override
+	public void generateMap(int size, Main main) {
+		//BufferedImage img = seedOnce(new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB), size);
 		
 	}
 	
@@ -41,7 +71,6 @@ public class BiomeNeighborDiff extends MapGenerator {
 			if (node.value >= SEED_RANGE &&
 					!knownNodes.contains(node) &&
 					node.inside(size)) {
-				
 				
 				waiting.add(new SeedNode(
 						node.x + 0,
@@ -88,8 +117,7 @@ public class BiomeNeighborDiff extends MapGenerator {
 			if (o instanceof SeedNode) {
 				SeedNode n = (SeedNode)o;
 				return this.x == n.x &&
-						this.y == n.y &&
-						this.value == n.value;
+						this.y == n.y;
 			}
 			
 			return false;
