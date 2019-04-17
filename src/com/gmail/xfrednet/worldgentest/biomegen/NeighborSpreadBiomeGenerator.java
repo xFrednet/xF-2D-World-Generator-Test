@@ -13,7 +13,7 @@ import com.gmail.xfrednet.worldgentest.gui.IPresenter;
 import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
 import com.gmail.xfrednet.worldgentest.gui.ShowcasePanel;
 
-public class NeighborSpreadBiomeGenerator extends MapGenerator implements IPresenter {
+public class NeighborSpreadBiomeGenerator implements IPresenter {
 
 	private static final float SEED_START = 1.0f;
 	private static final float SEED_RANGE = 0.5f;
@@ -47,12 +47,6 @@ public class NeighborSpreadBiomeGenerator extends MapGenerator implements IPrese
 	@Override
 	public JPanel getPresentationsPanel() {
 		return null;
-	}
-	
-	@Override
-	public void generateMap(int size, Main main) {
-		//BufferedImage img = seedOnce(new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB), size);
-		
 	}
 	
 	private BufferedImage seedOnce(BufferedImage img, int size) {

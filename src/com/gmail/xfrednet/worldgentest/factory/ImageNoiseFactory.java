@@ -1,4 +1,4 @@
-package com.gmail.xfrednet.worldgentest;
+package com.gmail.xfrednet.worldgentest.factory;
 
 import java.util.Random;
 
