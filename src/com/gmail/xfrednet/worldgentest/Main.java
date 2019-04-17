@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.gmail.xfrednet.worldgentest.biomegen.NeighborSpreadBiomeGenerator;
 import com.gmail.xfrednet.worldgentest.biomegen.VoronoiDiagramBiomeGenerator;
 import com.gmail.xfrednet.worldgentest.gui.IPresenter;
 import com.gmail.xfrednet.worldgentest.gui.ImagePanel;
@@ -26,6 +27,7 @@ public class Main {
 		list.add(new VoronoiDiagramBiomeGenerator());
 		list.add(new RandomNoiseMapGenerator());
 		list.add(new TrashPresenter());
+		list.add(new NeighborSpreadBiomeGenerator());
 		MainFrame frame = new MainFrame(list);
 	}
 	
